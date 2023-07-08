@@ -9,8 +9,6 @@ const helmet = require("helmet");
 const cors = require("cors");
 const xss = require("xss-clean");
 const rateLimiter = require("express-rate-limit");
-const swaggerUI = require("swagger-ui-express");
-const YAML = require("yamljs");
 const app = express();
 
 // error handler
@@ -35,16 +33,6 @@ app.use(xss());
 // extra packages
 
 // routes
-app.get("/", (req, res) => {
-  res
-    .status(StatusCodes.OK)
-    .send("<h1>Jobs API</h1><a href=/api-docs>Swagger Documentation</a>");
-});
-// app.use(
-//   "/api-docs",
-//   swaggerUI.serve,
-//   swaggerUI.setup(YAML.load("./schema.yaml"))
-// );
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 app.use(notFoundMiddleware);
