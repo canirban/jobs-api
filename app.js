@@ -9,11 +9,17 @@ const helmet = require("helmet");
 const cors = require("cors");
 const xss = require("xss-clean");
 const rateLimiter = require("express-rate-limit");
+const swaggerUI = require("swagger-ui-express");
+const YAML = require("yamljs");
+
+const swaggerDoc = YAML.load("./schema.yaml");
+
 const app = express();
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
+const { StatusCodes } = require("http-status-codes");
 
 app.set("trust proxy", 1);
 app.use(
@@ -32,6 +38,12 @@ app.use(xss());
 // extra packages
 
 // routes
+app.get("/", (req, res) => {
+  res
+    .status(StatusCodes.OK)
+    .send("<h1>Jobs API</h1><a href=/api-docs>Swagger Documentation</a>");
+});
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 app.use(notFoundMiddleware);
