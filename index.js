@@ -12,7 +12,7 @@ const rateLimiter = require("express-rate-limit");
 const swaggerUI = require("swagger-ui-express");
 const YAML = require("yamljs");
 
-const swaggerDoc = YAML.load("./schema.yaml");
+// const swaggerDoc = YAML.load("./schema.yaml");
 
 const app = express();
 
@@ -43,7 +43,7 @@ app.get("/", (req, res) => {
     .status(StatusCodes.OK)
     .send("<h1>Jobs API</h1><a href=/api-docs>Swagger Documentation</a>");
 });
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
+// app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 app.use(notFoundMiddleware);
